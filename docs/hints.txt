@@ -1,0 +1,13 @@
+1. Old Mitsubishi ECUs may need SCS to ground so they will talk to you.
+Also, they need SCS toggled along with (or instead of?) the ignition to
+reset.
+2. If connection doesn't work, try turning ignition on earlier or later
+(Honda).
+3. Comm line indication is a hint, refer to manufacturer's wiring diagram
+or try other lines if in doubt (Civic SRS etc.)
+4. Most common problem: Wrong baudrate. Try all.
+5. Fast-init is highly timing-critical; if it doesn't work, try again. (Can
+be recognized by rapid flashing of break LED.)
+6. If iface LED stays off and port stays at "none" in spite of plugged-in
+interface, check if drivers are installed. (Should happen automatically with
+Win7.)
