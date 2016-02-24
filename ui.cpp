@@ -752,9 +752,27 @@ void UI::keyEvent(QKeyEvent *event, bool *key_event)
       key_event[UIKEY_y] = true; break;
     case Qt::Key_N:
       key_event[UIKEY_n] = true; break;
-    case Qt::Key_0 ... Qt::Key_9:
+    case Qt::Key_0:
+    case Qt::Key_1:
+    case Qt::Key_2:
+    case Qt::Key_3:
+    case Qt::Key_4:
+    case Qt::Key_5:
+    case Qt::Key_6:
+    case Qt::Key_7:
+    case Qt::Key_8:
+    case Qt::Key_9:
       key_event[event->key() - Qt::Key_0 + UIKEY_0] = true; break;
-    case Qt::Key_F1 ... Qt::Key_F9:
+    case Qt::Key_F1:
+    case Qt::Key_F2:
+    case Qt::Key_F3:
+    case Qt::Key_F4:
+    case Qt::Key_F5:
+    case Qt::Key_F6:
+    case Qt::Key_F7:
+    case Qt::Key_F8:
+    case Qt::Key_F9:
+
       key_event[event->key() - Qt::Key_F1 + UIKEY_F1] = true; break;
     case Qt::Key_F12:
       key_event[UIKEY_F12] = true; break;

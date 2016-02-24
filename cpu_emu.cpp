@@ -573,7 +573,15 @@ int Cpu::emulate(void)
           psw |= PSW_VT;
         }
         break;
-      case 0x20 ... 0x27: /* sjmp rel11 */
+      case 0x20:
+      case 0x21:
+      case 0x22:
+      case 0x23:
+      case 0x24:
+      case 0x25:
+      case 0x26:
+      case 0x27:
+    //  case 0x20 ... 0x27: /* sjmp rel11 */
         rel16 = ((int16_t)((fetch() | ((opcode & 0x7) << 8)) << 5)) >> 5;
         target = pc + rel16;
         if (target == pc - 2) {
@@ -586,7 +594,15 @@ int Cpu::emulate(void)
         pc = target;
         cycle(7);
         break;
-      case 0x28 ... 0x2f: /* scall rel11 */
+      case 0x28:
+      case 0x29:
+      case 0x2A:
+      case 0x2B:
+      case 0x2C:
+      case 0x2D:
+      case 0x2E:
+      case 0x2F:
+    //  case 0x28 ... 0x2f: /* scall rel11 */
         val8 = fetch();
         rel16 = ((int16_t)((val8 | ((opcode & 0x7) << 8)) << 5)) >> 5;
         target = pc + rel16;
@@ -594,7 +610,15 @@ int Cpu::emulate(void)
         pc = target;
         cycle(11);
         break;
-      case 0x30 ... 0x37: /* jbc rel8 */
+      case 0x30:
+      case 0x31:
+      case 0x32:
+      case 0x33:
+      case 0x34:
+      case 0x35:
+      case 0x36:
+      case 0x37:
+//      case 0x30 ... 0x37: /* jbc rel8 */
         imm8 = 1 << (opcode & 0x7);
         addr8 = fetch();
         sval8 = (int8_t)fetch();
@@ -606,7 +630,15 @@ int Cpu::emulate(void)
         }
         cycle(5);
         break;  
-      case 0x38 ... 0x3f: /* jbs rel8 */
+      case 0x38:
+      case 0x39:
+      case 0x3A:
+      case 0x3B:
+      case 0x3C:
+      case 0x3D:
+      case 0x3E:
+      case 0x3F:
+          //      case 0x38 ... 0x3f: /* jbs rel8 */
         imm8 = 1 << (opcode & 0x7);
         addr8 = fetch();
         sval8 = (int8_t)fetch();

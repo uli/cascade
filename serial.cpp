@@ -434,7 +434,16 @@ int Serial::getRxState(void)
       case 0: /* start bit */
         serial_bitbang_last_bit_sent = 0;
         break;
-      case 1 ... 8: /* data bits */
+//      case 1 ... 8: /* data bits */
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+          /* data bits */
         byte = snoopByte();
         serial_bitbang_last_bit_sent = (byte >> (serial_bitbang_bit_pos - 1)) & 1;
         DEBUG(SERIAL, "issuing bit %d of %02X at %llu\n",

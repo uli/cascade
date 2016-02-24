@@ -151,17 +151,15 @@ protected:
   uint8_t memRead8Bus(uint16_t addr, int fetch);
 
   typedef uint8_t (Cpu::*memReader)(uint16_t addr);
-  inline uint8_t memRead8(uint16_t addr) {
-    switch (addr) {
-      case 0 ... 1: return 0;
-      case 0x18 ... 0xff:
-      case 0x2000 ... 0xbfff:
-        return memRead8Ram(addr);
-      case 0xc000 ... 0xffff:
-        return memRead8Mapped(addr);
-      default:
-        return memRead8Slow(addr);
-    }
+  inline uint8_t memRead8(uint16_t addr)
+  {
+      if (addr == 1 || addr==0) return 0;
+      if (addr>=0x18  && addr <=0xFF) return memRead8Ram(addr);
+      if (addr>=0x2000  && addr <=0xbfff) return memRead8Ram(addr);  
+      if (addr>=0xc000  && addr <=0xFFFF) return memRead8Mapped(addr);  
+//default
+         return memRead8Slow(addr);
+
   }
   
   uint8_t memRead8Ram(uint16_t addr) {
@@ -206,24 +204,18 @@ protected:
   }
   
   typedef void (Cpu::*memWriter)(uint16_t addr, uint8_t value);
-  inline void memWrite8(uint16_t addr, uint8_t value) {
-    switch (addr) {
-      case 0 ... 0x17:
-      case 0x200 ... 0x2ff:
-        ioWrite8(addr, value);
-        break;
-      case 0x18 ... 0xff:
-      case 0x2000 ... 0xbfff:
-        memWrite8Ram(addr, value);
-        break;
-      case 0xc000 ... 0xffff:
-        memWrite8Mapped(addr, value);
-        break;
-      default:
-        memWrite8Slow(addr, value);
-        break;
-    }
+  inline void memWrite8(uint16_t addr, uint8_t value) 
+  {
+      if (addr >=0x0 && addr <= 0x17) return ioWrite8(addr,value);
+      if (addr >=0x200 && addr <= 0x2ff) return ioWrite8(addr,value);
+      if (addr >=0x18 && addr <= 0xff) return memWrite8Ram(addr,value);
+      if (addr >=0x2000 && addr <= 0xbfff) return memWrite8Ram(addr,value);
+
+      if (addr >=0xc000 && addr <= 0xffff) return memWrite8Mapped(addr,value);
+//default
+      return memWrite8Slow(addr, value);;
   }
+ 
   void memWrite8Slow(uint16_t addr, uint8_t value);
   void memWrite8Mapped(uint16_t addr, uint8_t value) {
     DEBUG(MEM, "WRITE %02X -> %04X\n", value, addr);

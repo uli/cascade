@@ -315,25 +315,33 @@ uint8_t Cpu::ioRead8(uint16_t addr)
       REG("DATAMAP_HI");
       ret = data_hi;
       break;
-    case 0x203 ... 0x20f:
-    case 0x211:
-    case 0x213 ... 0x235:
-    case 0x237 ... 0x23f:
-    case 0x241 ... 0x26f:
-    case 0x274 ... 0x2ff:
-      REG("IO2XX");
-      DEBUG(IO, "%04X: IO2XX from %04X (%02X, '%c')\n", opc, addr, ram[addr], printable_char(ram[addr]));
-      if (addr == 0x274)
-        ret = 0x00;
-      else
-        ret = ram[addr];
-      break;
+
     default:
+     if ((addr>= 0x203 && addr <= 0x20f) ||
+         (addr>= 0x211 && addr <= 0x211) ||
+         (addr>= 0x213 && addr <= 0x235) ||
+         (addr>= 0x237 && addr <= 0x23f) ||
+         (addr>= 0x241 && addr <= 0x26f) ||
+         (addr>= 0x274 && addr <= 0x2ff) 
+         )
+     {
+
+         REG("IO2XX");
+         DEBUG(IO, "%04X: IO2XX from %04X (%02X, '%c')\n", opc, addr, ram[addr], printable_char(ram[addr]));
+         if (addr == 0x274)
+             ret = 0x00;
+         else
+             ret = ram[addr];
+
+
+         goto jump_good;
+     }
 fail:
       ERROR("I/O byte read from 0x%x unimplemented at %04X\n", addr, opc);
       dumpMem();
       exit(1);
   };
+jump_good:
   DEBUG(IO, "%04X (%08X/%8lld): IOR %s (%02X): %02X ('%c')\n", opc, virtToPhys(opc, 1), (long long)getCycles(), reg, addr, ret, printable_char(ret));
   return ret;
 }
@@ -776,25 +784,31 @@ void Cpu::ioWrite8(uint16_t addr, uint8_t value)
           data_ptr = (uint8_t *)&rom[phys];
       }
       break;
-    case 0x200:
-    case 0x201:
-    case 0x203 ... 0x20f:
-    case 0x211:
-    case 0x213 ... 0x24f:
-    case 0x251 ... 0x253:
-    case 0x255 ... 0x25d:
-    case 0x25f ... 0x26f:
-    case 0x274 ... 0x2ff:
-      REG("IO2XX");
-      DEBUG(IO, "%04X: IO2XX %02X ('%c') to %04X\n", opc, value, printable_char(value), addr);
-      ram[addr] = value;
-      break;
+
     default:
+        if ((addr>= 0x200 && addr <= 0x201) ||
+            (addr>= 0x203 && addr <= 0x20f) ||
+            (addr>= 0x211 && addr <= 0x211) ||
+            (addr>= 0x213 && addr <= 0x24f) ||
+            (addr>= 0x251 && addr <= 0x253) ||
+            (addr>= 0x255 && addr <= 0x25d) ||
+            (addr>= 0x25f && addr <= 0x26f) ||
+            (addr>= 0x274 && addr <= 0x2ff) 
+            )
+        {
+            REG("IO2XX");
+            DEBUG(IO, "%04X: IO2XX %02X ('%c') to %04X\n", opc, value, printable_char(value), addr);
+            ram[addr] = value;
+
+            goto jump_good;
+        }
+
 fail:
       ERROR("%04X/%08X: I/O byte write of 0x%x ('%c') to 0x%x (WSR %02X) unimplemented\n", opc, virtToPhys(opc, 1), value, printable_char(value), addr, wsr);
       dumpMem();
       exit(1);
   };
+jump_good:
   DEBUG(IO, "%04X (%08X/%8lld): IOW %s (%02X/'%c') -> %02X\n", opc, virtToPhys(opc, 1), (long long)getCycles(), reg, value, printable_char(value), addr);
 }
 
