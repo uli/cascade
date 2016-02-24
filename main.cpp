@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 #define IFACE_FTDI 2
 #define IFACE_FAKE 3
 #define IFACE_KCAN 4
-#if defined(NDEBUG) && defined(__MINGW32__)
+#if defined(NDEBUG) && (defined(__MINGW32__)|| defined (DIST_WINDOWS))
   int iface_type = IFACE_KCAN;
 #else
   int iface_type = IFACE_FAKE;
