@@ -18,8 +18,14 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+
+#ifndef DIST_WINDOWS
+
 #include <unistd.h>
 #include <dirent.h>
+#endif //DIST_WINDOW
+
+
 
 //#define DRYDOCK
 
