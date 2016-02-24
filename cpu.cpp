@@ -739,7 +739,7 @@ start_over:
       DEBUG(OS, "extracting RAR file %s\n", rom_name);
       fclose(fp);
       sprintf(new_name, "%s.lha", rom_name);
-      char cmd[strlen(rom_name) + strlen(new_name) + 50];
+      char *cmd = (char *)alloca(strlen(rom_name) + strlen(new_name) + 50);
       sprintf(cmd, "unrar p -inul \"%s\" >\"%s\"", rom_name, new_name);
       if (system(cmd)) {
         ERROR("failed to unpack %s to %s\n", rom_name, new_name);
@@ -771,7 +771,7 @@ start_over:
         *r = 0;
       sprintf(new_name, "%s.bin", stripname);
       free(stripname);
-      char cmd[strlen(rom_name) + strlen(new_name) + 50];
+      char *cmd=(char *)alloca(strlen(rom_name) + strlen(new_name) + 50);
       sprintf(cmd, "lha p -q \"%s\" >\"%s\"", rom_name, new_name);
       if (system(cmd)) {
         ERROR("failed to unpack %s to %s\n", rom_name, new_name);
@@ -821,7 +821,7 @@ start_over:
 
   memcpy(ram, rom, 0xc000);
   
-  char eename[strlen(rom_name) + 4 + 1];
+  char *eename=(char *)alloca(strlen(rom_name) + 4 + 1);
   sprintf(eename, "%s.eep", rom_name);
   eeprom->setFilename(eename);
 
