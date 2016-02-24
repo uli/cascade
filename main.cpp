@@ -199,13 +199,22 @@ int main(int argc, char **argv)
   }
 #endif
 
+#if !defined(DIST_WINDOWS)
   if (argc >= 1) {
     if (!cpu.loadRom(argv[0])) {
       ERROR("failed to load ROM image\n");
       exit(1);
     }
   }
-  
+#else
+  if (argc > 1) {
+      if (!cpu.loadRom(argv[1])) {
+          ERROR("failed to load ROM image\n");
+          exit(1);
+      }
+  }
+#endif
+
   Interface *iface;
   switch (iface_type) {
     case IFACE_KL:
