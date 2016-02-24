@@ -38,21 +38,21 @@ extern FILE *win_stderr;
 #endif
 
 #ifdef NDEBUG
-#define DEBUG(level, bla...) do {} while(0)
+#define DEBUG(level, ...) do {} while(0)
 #else
 #ifdef __MINGW32__
-#define DEBUG(level, bla...) \
-  do { if (unlikely(debug_level & DEBUG_ ##level)) __mingw_fprintf(win_stderr, bla); /* fflush(win_stderr); */ } while(0)
+#define DEBUG(level, ...) \
+  do { if (unlikely(debug_level & DEBUG_ ##level)) __mingw_fprintf(win_stderr, __VA_ARGS__); /* fflush(win_stderr); */ } while(0)
 #else
-#define DEBUG(level, bla...) \
-  do { if (unlikely(debug_level & DEBUG_ ##level)) fprintf(stderr, bla); } while(0)
+#define DEBUG(level, ...) \
+  do { if (unlikely(debug_level & DEBUG_ ##level)) fprintf(stderr, __VA_ARGS__); } while(0)
 #endif
 #endif
 #ifdef __MINGW32__
 #undef ERROR
-#define ERROR(bla...) do { __mingw_fprintf(win_stderr, bla); fflush(win_stderr); } while(0)
+#define ERROR(...) do { __mingw_fprintf(win_stderr, __VA_ARGS__); fflush(win_stderr); } while(0)
 #else
-#define ERROR(bla...) fprintf(stderr, bla)
+#define ERROR(...) fprintf(stderr, __VA_ARGS__)
 #endif
 
 extern uint32_t debug_level;

@@ -23,10 +23,10 @@
 
 //#define DRYDOCK
 
-#define CHECK(fun, args...) { \
+#define CHECK(fun, ...) { \
   FT_STATUS ret; \
   /* DEBUG(OS, "doing " #fun " now\n"); */ \
-  if ((ret = fun(args)) != FT_OK) { \
+  if ((ret = fun(__VA_ARGS__)) != FT_OK) { \
     DEBUG(OS, #fun " failed: %ld\n", ret); \
     return -1; \
   } \
