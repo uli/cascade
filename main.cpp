@@ -12,7 +12,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#ifndef DIST_WINDOWS
+
 #include <unistd.h>
+#endif //DIST_WINDOWS
+
 #include <string.h>
 #include <assert.h>
 #include <fcntl.h>
@@ -55,7 +59,7 @@ int main(int argc, char **argv)
   Cpu cpu(&ui);
   ui.setCpu(&cpu);
 
-  signed char c;
+
   const char *tty = NULL;
   
 #define IFACE_ELM 0
@@ -75,6 +79,8 @@ int main(int argc, char **argv)
 #ifndef NDEBUG
   uint32_t trigger = 0;
 #endif
+#if !defined(DIST_WINDOWS)
+  signed char c;
   while ((c = getopt (argc, argv, "d:t:w:s:m:r:p:i:ex:v:S")) != -1) {
     switch (c) {
       case 'd':
@@ -184,7 +190,8 @@ int main(int argc, char **argv)
   }
   argc -= optind;
   argv += optind;
-  
+#endif //DIST_WINDOWS  
+
 #ifndef NDEBUG
   if (trigger) {
     cpu.setDebugTrigger(trigger, debug_level);
