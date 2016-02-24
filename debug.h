@@ -29,9 +29,12 @@
 #define DEBUG_UI      0x00000200UL
 
 #define DEBUG_DEFAULT (DEBUG_WARN | DEBUG_SERIAL | DEBUG_ABRIDGED | DEBUG_IFACE | DEBUG_OS | DEBUG_KEY | DEBUG_HSIO | DEBUG_HINTS | DEBUG_UI)
-
+#ifdef _MSC_VER 
+#define unlikely(x) (x)
+#else
 #define likely(x)       __builtin_expect(!!(x), 1)
 #define unlikely(x)     __builtin_expect(!!(x), 0)
+#endif // MSVC_VER
 
 #ifdef __MINGW32__
 extern FILE *win_stderr;
