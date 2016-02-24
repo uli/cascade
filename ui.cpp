@@ -32,7 +32,12 @@ public:
 };
 
 /* Don't forget to update enum in ui.h! */
+#ifdef _MSC_VER
+static const char *led_names[]  = {
+#else
 static const char *led_names[] __attribute__((used)) = {
+#endif // _MCVC_VER
+
   "serial",
   "data rx",
   "data tx",
