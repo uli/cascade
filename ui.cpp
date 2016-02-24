@@ -8,17 +8,23 @@
  * License 1.0.  Read the file "LICENSE" for details.
  */
 
-#include "ui.h"
-#include "lcd.h"
-#include "serial.h"
+
 #include <QtGui>
 #ifdef Q_WS_QWS
 #include <QDirectPainter>
 #endif
 #include <QTextEdit>
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#  include <QtWidgets>
+#else
+#  include <QtGui>
+#endif
 
 #include "version.h"
-
+#include "ui.h"
+#include "lcd.h"
+#include "serial.h"
 class KeypadButton : public QPushButton {
 public:
   KeypadButton(UI *ui, QString text, UIKey key) : QPushButton(text, ui) {
