@@ -724,7 +724,7 @@ void Cpu::ioWrite8(uint16_t addr, uint8_t value)
             break;
           default:
             ERROR("unhandled port 254h value\n");
-            exit(1);
+          //  exit(1);
             break;
         }
       }
