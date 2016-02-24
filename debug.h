@@ -10,6 +10,13 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#ifdef DIST_WINDOWS
+
+#ifdef ERROR
+#undef ERROR
+#endif // ERROR
+#endif //DIST_WINDOW
+
 
 #define DEBUG_WARN    0x00000010UL
 #define DEBUG_IO      0x00000100UL
