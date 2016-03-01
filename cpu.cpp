@@ -19,6 +19,10 @@
 #include "hints.h"
 #include <string.h>
 
+#ifndef DIST_WINDOWS
+#include <unistd.h>
+#endif //DIST_WINDOWS
+
 Cpu::Cpu(UI *ui)
 {
   end_cycles = (uint64_t)-1LL;

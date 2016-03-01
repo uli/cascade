@@ -16,7 +16,7 @@
 AutoTTY::AutoTTY(UI *ui, const char *driver)
 {
   this->ui = ui;
-  this->driver = strdup(driver);
+    this->driver = driver?strdup(driver):NULL;
   sh = -1;
   plugged_in = false;
   ui->setLED(LED_IFACE, false);

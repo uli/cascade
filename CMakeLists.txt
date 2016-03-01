@@ -14,7 +14,11 @@ set(CMAKE_PREFIX_PATH "c:/Qt_5/5.5/msvc2013")
 find_package (Qt5Widgets REQUIRED) 
 endif()
 
+if(DIST_MACOSX)
+set(CMAKE_PREFIX_PATH "/Volumes/developer/Qt/5.5/clang_64/")
 
+find_package (Qt5Widgets REQUIRED)	
+endif()
 
 
 if(DIST_WINDOWS)
@@ -41,15 +45,29 @@ list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_serial_linux.
 list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/iface_kl_ftdi.cpp)
 endif()
 
+if(DIST_MACOSX)
+list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_sdl.cpp)
+list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_serial_win32.cpp)
+list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_win32.cpp)
+
+#list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_linux.cpp)
+list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_serial_linux.cpp)
+list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/iface_kl_ftdi.cpp)
+endif()
+
 
 message(${${projectName}_SRC})
 add_executable(${projectName} ${${projectName}_SRC})
+
 if(DIST_WINDOWS)
-target_link_libraries(${projectName} ${CMAKE_CURRENT_SOURCE_DIR}/ftd2xx_win32/ftd2xx.lib )
-if(DIST_WIN32VS05)
-target_link_libraries(${projectName} Qt4::QtGui )
-else()
-qt5_use_modules(${projectName} Widgets)
+	target_link_libraries(${projectName} ${CMAKE_CURRENT_SOURCE_DIR}/ftd2xx_win32/ftd2xx.lib )
+	if(DIST_WIN32VS05)
+		target_link_libraries(${projectName} Qt4::QtGui )
+	else()
+		qt5_use_modules(${projectName} Widgets)
+	endif()
+elseif(DIST_MACOSX)
+	qt5_use_modules(${projectName} Widgets)	
 endif()
-endif()
+
 
