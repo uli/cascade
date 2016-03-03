@@ -42,6 +42,7 @@ if(DIST_WINDOWS)
 list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_sdl.cpp)
 list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_linux.cpp)
 list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_serial_linux.cpp)
+list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/os_serial_macosx.cpp)
 list(REMOVE_ITEM ${projectName}_SRC ${CMAKE_CURRENT_SOURCE_DIR}/iface_kl_ftdi.cpp)
 endif()
 
