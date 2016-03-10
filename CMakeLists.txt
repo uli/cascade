@@ -9,7 +9,7 @@ include(${QT_USE_FILE})
 endif()
 
 if(DIST_WIN32VS13)
-set(CMAKE_PREFIX_PATH "c:/Qt_5/5.5/msvc2013")
+set(CMAKE_PREFIX_PATH "c:/Qt/5.5/msvc2013")
 
 find_package (Qt5Widgets REQUIRED) 
 endif()
