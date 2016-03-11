@@ -1,0 +1,3 @@
+language: cpp
+os: osx
+script: build_osx_clang_x64.sh
