@@ -663,8 +663,18 @@ void UI::keypadUpSlot()
   key_up[b->key] = true;
 }
 
-void UI::initToolkit()
+void UI::initToolkit(char *appPath)
 {
+
+    QDir dir(appPath); // e.g. appdir/Contents/MacOS/appname
+
+
+    dir.cdUp();
+    dir.cd("plugins"); // e.g. appdir/Contents/PlugIns
+    //std::string dirr = dir.dirName().toStdString();
+
+    QCoreApplication::setLibraryPaths(QStringList(dir.absolutePath()));
+
   int qt_argc = 2;
   static char *qt_argv[] = {(char *)"emu", (char *)"-qws"};
   new QApplication(qt_argc, qt_argv);

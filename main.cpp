@@ -53,7 +53,7 @@ int main(int argc, char **argv)
   win_stderr = fopen("stderr.out", "w");
 #endif
 
-  UI::initToolkit();
+  UI::initToolkit(argv[0]);
   UI ui;
 
   Cpu cpu(&ui);
