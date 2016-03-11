@@ -9,6 +9,13 @@ install:
       ;
 
 script: 
-
 - ls  /usr/local/opt/qt5/
 - /bin/bash ./build_osx_clang_x64.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: UdumWwUmheO5RpamBresix+js6GY+yutHYs51/nzXtXWsdsfs/e4owqTQdP6Lco33P7dcoUsMmap4nOg7WKFeSKaU/KUmF70bW4ODsvtp4qFpNVRTDMLO13tjS2qNZc7l/vsVbCn93Ws9+Ivrn3q5jutZZI3X4NbrH10Oa9vH5aJsqhrVuzaeUmrDio1PNjX/dzC9YbGNsuAz77rVSil0N5HEc9sbYURCmY4O0q04i5Wbad8p90y3IJUQ1sH3DK6CyzhgJJeLynK8yIiFn1LkiO/RvKpgA1zK9iqrNrwNMnITIccFCQIGXLRmeSn/c/DmVcG56H/iv7p2625XNuVqvW+oEVPd5W9iYChPI2NZsapMGyFDqaFts0UiJNpQp1dO93dvXtBb2LjW44PLAu/v2uvhvs8t4TWZy7O6+BYefMg2i4FEBbtulTNPTTWvjy+vooe8LojXLnbwsxC1qbBz4npkRCZUpiqxGrZypT8d0vGEEESX8d2EkQ7KOmq900sZ3hEKLdZCkSUcymESk6E2x+GvJuDe6NTHEORzB4oDlbpgpyRm1Evdn3TLsHqRa8XGDBJ6LxPo9emdMszrNzhTSw/61CXm7XcqOEYfRThAbEDSnsliSHKQSy1mybW6k6pwJ0Zet93y1iJc8jERGvs2Nk+kijYzuS2PmIKdDxfaEc=
+  file: test
+  on:
+    repo: shadowsgit/cascade
+    branch: open_public
