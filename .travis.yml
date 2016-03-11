@@ -1,10 +1,8 @@
 language: cpp
 os: osx
 install:
--         brew update
-      && brew unlink cmake
-      && brew install cmake
-      && brew install qt5
+-
+      brew install qt5
       && chmod -R 755 /usr/local/opt/qt5/*
       ;
 
@@ -16,6 +14,7 @@ deploy:
   api_key:
     secure: Y8BQ86C8S6ZQeQ81Gs9hPJGmJEhoIJsC3GWEnOmgHVutY3psmIcOCOznCdViG4NAMX/DukYL3RFP9C3oOrIXUkwD8r/L9SlGVbuwxmxW3IuQsyGy+qHnvwYJHcJsIHM7XWxsYPz2Qe4+rqTN2fxJM/PD8edddVHt5gjI9nMrW2V1ptx+7RfG34/XtaP4EcBCAyNyhTOlNuuh8rimVHxhhM35tHVyO5ct6//TZJp4c93CBZAH/bkxnwys9LRa+Xfdl+sWdFjuKDL2q8McNRSv9vkKaxzjI4b10mKspwk8v2WVg21jeSAv720aJCdumhGxX4Ts2aExlUOkL0MbCMLGL7F+OggNGziFTyKiZGXkGotkbcqSN6+J7Ht16AO7K9ehB9JG3SOdyMn0DOCB92OF7C24T4Knj7ZQnkuz3KTow07pKl3lsbKlywdOINLmYw236n1W5TQmpBufZVUOZZ9LJ12g7zBnmLtfslauUENI8Om4Nubu6dDKteUm4xxd9JG7m35bX5jb5h2cZrVL5yyvTl+NPLCtFCKl9ojE4bjojxpXMSZmDzb4/ji3WMFXkfqUEMpCgogsZ3E3VhwzCWHL4+Tf8s8fWY7vw1dlyRyMNBcUA6gKAb5NIjHKkBhwJACGwtRmYv8jAN8siAxJEDisyzQ5xyDgwOWGmfNbeKNgjLs=
   file: build/osx_clang64/Release/cascade
+  skip_cleanup: true
   on:
     repo: shadowsgit/cascade
     branch: open_public
