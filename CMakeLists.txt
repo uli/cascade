@@ -15,7 +15,8 @@ find_package (Qt5Widgets REQUIRED)
 endif()
 
 if(DIST_MACOSX)
-set(CMAKE_PREFIX_PATH "/Volumes/developer/Qt/5.5/clang_64/")
+#set(CMAKE_PREFIX_PATH "/Volumes/developer/Qt/5.5/clang_64/")
+set(CMAKE_PREFIX_PATH "/usr/local/opt/qt5/")
 
 find_package (Qt5Widgets REQUIRED)	
 endif()
