@@ -1,3 +1,6 @@
 language: cpp
 os: osx
-script: build_osx_clang_x64.sh
+script: 
+- pwd
+- ls
+- /bin/bash ./build_osx_clang_x64.sh
