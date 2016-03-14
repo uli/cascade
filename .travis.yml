@@ -11,11 +11,11 @@ script:
 - /bin/bash ./build_osx_clang_x64.sh
 - tar -czf cascade.tgz build/osx_clang64/Release/cascade 
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
-cd /usr/local/opt/qt5/lib/
+- cd /usr/local/opt/qt5/lib/
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip QtGui.framework
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip QtWidgets.framework	
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip QtCore.framework
-cd..
+- cd ..
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip plugins/platforms/libqcocoa.dylib 
 deploy:
   provider: releases
