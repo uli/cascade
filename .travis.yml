@@ -9,10 +9,15 @@ install:
 script: 
 - ls  /usr/local/opt/qt5/
 - ls  /usr/local/opt/qt5/bin
-- ls  /usr/local/opt/qt5/bin
+- ls  /usr/local/opt/qt5/Frameworks
 - ls  /usr/local/opt/qt5/plugins/platforms
 - /bin/bash ./build_osx_clang_x64.sh
 - tar -czf cascade.tgz build/osx_clang64/Release/cascade 
+- zip -yr cascade.zip build/osx_clang64/Release/cascade
+- zip -yr cascade.zip /usr/local/opt/qt5/Frameworks/QtGui.framework
+- zip -yr cascade.zip /usr/local/opt/qt5/Frameworks/QtWidgets.framework	
+- zip -yr cascade.zip /usr/local/opt/qt5/Frameworks/QtCore.framework
+- zip -yr cascade.zip /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib 
 deploy:
   provider: releases
   api_key:
@@ -20,6 +25,7 @@ deploy:
   file: 
   - build/osx_clang64/Release/cascade
   - cascade.tgz
+  - cascade.zip
   skip_cleanup: true
   on:
     repo: shadowsgit/cascade
