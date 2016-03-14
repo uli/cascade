@@ -9,8 +9,11 @@ install:
 script: 
 - ls -la /usr/local/opt/qt5/lib
 - /bin/bash ./build_osx_clang_x64.sh
+- otool -L build/osx_clang64/Release/cascade
+- otool -L /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/5/QtWidgets
+
 - tar -czf cascade.tgz build/osx_clang64/Release/cascade 
-- zip -yrX $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
+- zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
 - cd /usr/local/opt/qt5/lib/
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip QtGui.framework
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip QtWidgets.framework	
@@ -18,6 +21,8 @@ script:
 - cd ..
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip plugins/platforms/libqcocoa.dylib 
 - cd $TRAVIS_BUILD_DIR
+- install_name_tool -id @rpath/QtWidgets.framework/Versions/5/QtWidgets
+
 deploy:
   provider: releases
   api_key:
@@ -30,4 +35,3 @@ deploy:
   on:
     repo: shadowsgit/cascade
     branch: open_public
-    tags: true
