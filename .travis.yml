@@ -17,6 +17,7 @@ script:
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip QtCore.framework
 - cd ..
 - zip -yrX $TRAVIS_BUILD_DIR/cascade.zip plugins/platforms/libqcocoa.dylib 
+- cd $TRAVIS_BUILD_DIR
 deploy:
   provider: releases
   api_key:
