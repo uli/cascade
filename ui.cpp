@@ -673,7 +673,8 @@ void UI::initToolkit(char *appPath)
     dir.cd("plugins"); // e.g. appdir/Contents/PlugIns
     //std::string dirr = dir.dirName().toStdString();
 
-    QCoreApplication::setLibraryPaths(QStringList(dir.absolutePath()));
+   // QCoreApplication::setLibraryPaths(QStringList(dir.absolutePath()));
+  ERROR("\n path %s path\n", dir.absolutePath().toStdString().c_str());
 
   int qt_argc = 2;
   static char *qt_argv[] = {(char *)"emu", (char *)"-qws"};
