@@ -10,8 +10,8 @@ script:
 - install_name_tool -id @rpath/QtWidgets.framework/Versions/5/QtWidgets /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/5/QtWidgets
 - install_name_tool -id @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtCore.framework/Versions/5/QtCore
 - install_name_tool -id @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtGui.framework/Versions/5/QtGui
-- /bin/bash ./build_osx_clang_x64.sh
-- install_name_tool -add_rpath @loader_path/ build/osx_clang64/Release/cascade 
+
+
 
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtGui.framework/Versions/5/QtGui  @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/Current/QtWidgets 
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/Current/QtWidgets 
@@ -24,9 +24,12 @@ script:
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtGui.framework/Versions/5/QtGui @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
 
+
+- /bin/bash ./build_osx_clang_x64.sh
+
+- install_name_tool -add_rpath @loader_path/ build/osx_clang64/Release/cascade 
+
 - otool -L build/osx_clang64/Release/cascade
-- export DYLD_PRINT_LIBRARIES=1
-- build/osx_clang64/Release/cascade
 - zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
 - cd /usr/local/opt/qt5/lib/
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtGui.framework
