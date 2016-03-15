@@ -28,6 +28,8 @@ script:
 - /bin/bash ./build_osx_clang_x64.sh
 
 - install_name_tool -add_rpath @loader_path/ build/osx_clang64/Release/cascade 
+- install_name_tool -add_rpath @executable_path/ build/osx_clang64/Release/cascade 
+- install_name_tool -add_rpath . build/osx_clang64/Release/cascade 
 
 - zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
 - cd /usr/local/opt/qt5/lib/
