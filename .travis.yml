@@ -32,7 +32,6 @@ script:
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtWidgets.framework	
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtCore.framework
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtPrintSupport.framework
-- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtDBus.framework.framework
 
 - cd ..
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip plugins/platforms/libqcocoa.dylib 
