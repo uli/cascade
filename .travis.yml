@@ -29,7 +29,6 @@ script:
 
 - install_name_tool -add_rpath @loader_path/ build/osx_clang64/Release/cascade 
 
-- otool -L build/osx_clang64/Release/cascade
 - zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
 - cd /usr/local/opt/qt5/lib/
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtGui.framework
@@ -38,7 +37,7 @@ script:
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtPrintSupport.framework
 
 - cd ..
-- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip plugins/platforms/libqcocoa.dylib 
+- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip plugins 
 - cd $TRAVIS_BUILD_DIR
 deploy:
   provider: releases
