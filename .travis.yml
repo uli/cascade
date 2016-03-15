@@ -25,7 +25,8 @@ script:
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
 
 - otool -L build/osx_clang64/Release/cascade
-- otool -L /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/5/QtWidgets
+- export DYLD_PRINT_LIBRARIES=1
+- build/osx_clang64/Release/cascade
 - zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
 - cd /usr/local/opt/qt5/lib/
 - zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtGui.framework
