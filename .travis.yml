@@ -11,6 +11,7 @@ script:
 - install_name_tool -id @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtCore.framework/Versions/5/QtCore
 - install_name_tool -id @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtGui.framework/Versions/5/QtGui
 - /bin/bash ./build_osx_clang_x64.sh
+- install_name_tool -add_rpath @loader_path/ build/osx_clang64/Release/cascade 
 - otool -L build/osx_clang64/Release/cascade
 - otool -L /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/5/QtWidgets
 - zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
