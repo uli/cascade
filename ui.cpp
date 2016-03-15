@@ -672,7 +672,7 @@ void UI::initToolkit(char *appPath)
     dir.cdUp();
     dir.cd("plugins"); // e.g. appdir/Contents/PlugIns
     //std::string dirr = dir.dirName().toStdString();
-
+  ERROR("\n\n path %s path\n", dir.absolutePath().toStdString().c_str());
     QCoreApplication::setLibraryPaths(QStringList(dir.absolutePath()));
 
   int qt_argc = 2;
