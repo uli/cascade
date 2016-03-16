@@ -10,6 +10,13 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#ifdef DIST_WINDOWS
+
+#ifdef ERROR
+#undef ERROR
+#endif // ERROR
+#endif //DIST_WINDOW
+
 
 #define DEBUG_WARN    0x00000010UL
 #define DEBUG_IO      0x00000100UL
@@ -29,30 +36,33 @@
 #define DEBUG_UI      0x00000200UL
 
 #define DEBUG_DEFAULT (DEBUG_WARN | DEBUG_SERIAL | DEBUG_ABRIDGED | DEBUG_IFACE | DEBUG_OS | DEBUG_KEY | DEBUG_HSIO | DEBUG_HINTS | DEBUG_UI)
-
+#ifdef _MSC_VER 
+#define unlikely(x) (x)
+#else
 #define likely(x)       __builtin_expect(!!(x), 1)
 #define unlikely(x)     __builtin_expect(!!(x), 0)
+#endif // MSVC_VER
 
 #ifdef __MINGW32__
 extern FILE *win_stderr;
 #endif
 
 #ifdef NDEBUG
-#define DEBUG(level, bla...) do {} while(0)
+#define DEBUG(level, ...) do {} while(0)
 #else
 #ifdef __MINGW32__
-#define DEBUG(level, bla...) \
-  do { if (unlikely(debug_level & DEBUG_ ##level)) __mingw_fprintf(win_stderr, bla); /* fflush(win_stderr); */ } while(0)
+#define DEBUG(level, ...) \
+  do { if (unlikely(debug_level & DEBUG_ ##level)) __mingw_fprintf(win_stderr, __VA_ARGS__); /* fflush(win_stderr); */ } while(0)
 #else
-#define DEBUG(level, bla...) \
-  do { if (unlikely(debug_level & DEBUG_ ##level)) fprintf(stderr, bla); } while(0)
+#define DEBUG(level, ...) \
+  do { if (unlikely(debug_level & DEBUG_ ##level)) fprintf(stderr, __VA_ARGS__); } while(0)
 #endif
 #endif
 #ifdef __MINGW32__
 #undef ERROR
-#define ERROR(bla...) do { __mingw_fprintf(win_stderr, bla); fflush(win_stderr); } while(0)
+#define ERROR(...) do { __mingw_fprintf(win_stderr, __VA_ARGS__); fflush(win_stderr); } while(0)
 #else
-#define ERROR(bla...) fprintf(stderr, bla)
+#define ERROR(...) fprintf(stderr, __VA_ARGS__)
 #endif
 
 extern uint32_t debug_level;

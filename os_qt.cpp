@@ -9,7 +9,7 @@
  */
 
 #include "os.h"
-#include <QtConcurrentRun>
+#include <QThread>
 
 class OsThread : public QThread
 {

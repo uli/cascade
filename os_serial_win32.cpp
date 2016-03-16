@@ -18,15 +18,21 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+
+#ifndef DIST_WINDOWS
+
 #include <unistd.h>
 #include <dirent.h>
+#endif //DIST_WINDOW
+
+
 
 //#define DRYDOCK
 
-#define CHECK(fun, args...) { \
+#define CHECK(fun, ...) { \
   FT_STATUS ret; \
   /* DEBUG(OS, "doing " #fun " now\n"); */ \
-  if ((ret = fun(args)) != FT_OK) { \
+  if ((ret = fun(__VA_ARGS__)) != FT_OK) { \
     DEBUG(OS, #fun " failed: %ld\n", ret); \
     return -1; \
   } \

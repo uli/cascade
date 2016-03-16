@@ -8,17 +8,23 @@
  * License 1.0.  Read the file "LICENSE" for details.
  */
 
-#include "ui.h"
-#include "lcd.h"
-#include "serial.h"
+
 #include <QtGui>
 #ifdef Q_WS_QWS
 #include <QDirectPainter>
 #endif
 #include <QTextEdit>
+#include <QtGlobal>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#  include <QtWidgets>
+#else
+#  include <QtGui>
+#endif
 
 #include "version.h"
-
+#include "ui.h"
+#include "lcd.h"
+#include "serial.h"
 class KeypadButton : public QPushButton {
 public:
   KeypadButton(UI *ui, QString text, UIKey key) : QPushButton(text, ui) {
@@ -32,7 +38,12 @@ public:
 };
 
 /* Don't forget to update enum in ui.h! */
+#ifdef _MSC_VER
+static const char *led_names[]  = {
+#else
 static const char *led_names[] __attribute__((used)) = {
+#endif // _MCVC_VER
+
   "serial",
   "data rx",
   "data tx",
@@ -652,8 +663,22 @@ void UI::keypadUpSlot()
   key_up[b->key] = true;
 }
 
-void UI::initToolkit()
+void UI::initToolkit(char *appPath)
 {
+
+    QDir dir(appPath); // e.g. appdir/Contents/MacOS/appname
+
+
+    dir.cdUp();
+    if(!dir.cd("plugins"))
+	{
+		 dir.cdUp();
+		 dir.cd("plugins");
+	}; // e.g. appdir/Contents/PlugIns
+    //std::string dirr = dir.dirName().toStdString();
+  ERROR("\n\n path %s path\n", dir.absolutePath().toStdString().c_str());
+    QCoreApplication::setLibraryPaths(QStringList(dir.absolutePath()));
+
   int qt_argc = 2;
   static char *qt_argv[] = {(char *)"emu", (char *)"-qws"};
   new QApplication(qt_argc, qt_argv);
@@ -752,9 +777,27 @@ void UI::keyEvent(QKeyEvent *event, bool *key_event)
       key_event[UIKEY_y] = true; break;
     case Qt::Key_N:
       key_event[UIKEY_n] = true; break;
-    case Qt::Key_0 ... Qt::Key_9:
+    case Qt::Key_0:
+    case Qt::Key_1:
+    case Qt::Key_2:
+    case Qt::Key_3:
+    case Qt::Key_4:
+    case Qt::Key_5:
+    case Qt::Key_6:
+    case Qt::Key_7:
+    case Qt::Key_8:
+    case Qt::Key_9:
       key_event[event->key() - Qt::Key_0 + UIKEY_0] = true; break;
-    case Qt::Key_F1 ... Qt::Key_F9:
+    case Qt::Key_F1:
+    case Qt::Key_F2:
+    case Qt::Key_F3:
+    case Qt::Key_F4:
+    case Qt::Key_F5:
+    case Qt::Key_F6:
+    case Qt::Key_F7:
+    case Qt::Key_F8:
+    case Qt::Key_F9:
+
       key_event[event->key() - Qt::Key_F1 + UIKEY_F1] = true; break;
     case Qt::Key_F12:
       key_event[UIKEY_F12] = true; break;

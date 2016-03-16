@@ -19,6 +19,10 @@
 #include "hints.h"
 #include <string.h>
 
+#ifndef DIST_WINDOWS
+#include <unistd.h>
+#endif //DIST_WINDOWS
+
 Cpu::Cpu(UI *ui)
 {
   end_cycles = (uint64_t)-1LL;
@@ -286,7 +290,7 @@ uint32_t Cpu::virtToPhysSlow(uint16_t addr, int fetch)
   else if (map_hi == 8 && map_lo <= 0x1f) { // (map_lo == 0x1e || map_lo == 0x1f || map_lo == 3 || map_lo == 5 || map_lo == 4)) {
     return 0xcaf00000UL + map_lo * 0x4000 + (addr - 0xc000);
   }
-  else if (map_hi == 0x10) {
+  else if (map_hi == 0x10  ) {
     if (exrom)
       return 0xbab00000UL + map_lo * 0x4000 + (addr - 0xc000);
     else
@@ -524,7 +528,7 @@ const char *Cpu::disassemble()
     case 0x19: OP2SH("SHLB"); break;
     case 0x1a: OP2SH("SHRAB"); break;
     case 0x1b: OP2IX("XCHB"); break;
-    case 0x1c ... 0x1f: OP0("RESERVED"); break;
+ /*   case 0x1c ... 0x1f: OP0("RESERVED"); break;
     case 0x20 ... 0x27: OPJ11("SJMP"); break;
     case 0x28 ... 0x2f: OPJ11("SCALL"); break;
     case 0x30 ... 0x37: OPJBIT("JBC"); break;
@@ -560,7 +564,7 @@ const char *Cpu::disassemble()
     case 0xb0 ... 0xb3: OP2("LDB"); break;
     case 0xb4 ... 0xb7: OP2("ADDCB"); break;
     case 0xb8 ... 0xbb: OP2("SUBCB"); break;
-    case 0xbc ... 0xbf: OP2("LDBSE"); break;
+    case 0xbc ... 0xbf: OP2("LDBSE"); break;*/
     case 0xc0: OP2("ST"); break;
     case 0xc1: OP2D("BMOV"); break;
     case 0xc2: OP2("ST"); break;
@@ -597,9 +601,9 @@ const char *Cpu::disassemble()
     case 0xe1: OPDJ8("DJNZW"); break;
     case 0xe2: OPUNIMP("TIJMP"); break;
     case 0xe3: sprintf(buf, "BR [%02X]", peek(1)); break;
-    case 0xe4 ... 0xe6: OP0("RESERVED"); break;
+   // case 0xe4 ... 0xe6: OP0("RESERVED"); break;
     case 0xe7: OPJ16("LJMP"); break;
-    case 0xe8 ... 0xeb: OP0("RESERVED"); break;
+  //  case 0xe8 ... 0xeb: OP0("RESERVED"); break;
     case 0xec: OPUNIMP("DPTS"); break;
     case 0xed: OPUNIMP("EPTS"); break;
     case 0xee: OP0("RESERVED NOP"); break;
@@ -739,7 +743,7 @@ start_over:
       DEBUG(OS, "extracting RAR file %s\n", rom_name);
       fclose(fp);
       sprintf(new_name, "%s.lha", rom_name);
-      char cmd[strlen(rom_name) + strlen(new_name) + 50];
+      char *cmd = (char *)alloca(strlen(rom_name) + strlen(new_name) + 50);
       sprintf(cmd, "unrar p -inul \"%s\" >\"%s\"", rom_name, new_name);
       if (system(cmd)) {
         ERROR("failed to unpack %s to %s\n", rom_name, new_name);
@@ -771,7 +775,7 @@ start_over:
         *r = 0;
       sprintf(new_name, "%s.bin", stripname);
       free(stripname);
-      char cmd[strlen(rom_name) + strlen(new_name) + 50];
+      char *cmd=(char *)alloca(strlen(rom_name) + strlen(new_name) + 50);
       sprintf(cmd, "lha p -q \"%s\" >\"%s\"", rom_name, new_name);
       if (system(cmd)) {
         ERROR("failed to unpack %s to %s\n", rom_name, new_name);
@@ -821,7 +825,7 @@ start_over:
 
   memcpy(ram, rom, 0xc000);
   
-  char eename[strlen(rom_name) + 4 + 1];
+  char *eename=(char *)alloca(strlen(rom_name) + 4 + 1);
   sprintf(eename, "%s.eep", rom_name);
   eeprom->setFilename(eename);
 

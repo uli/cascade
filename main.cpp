@@ -12,7 +12,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#ifndef DIST_WINDOWS
+
 #include <unistd.h>
+#endif //DIST_WINDOWS
+
 #include <string.h>
 #include <assert.h>
 #include <fcntl.h>
@@ -49,13 +53,13 @@ int main(int argc, char **argv)
   win_stderr = fopen("stderr.out", "w");
 #endif
 
-  UI::initToolkit();
+  UI::initToolkit(argv[0]);
   UI ui;
 
   Cpu cpu(&ui);
   ui.setCpu(&cpu);
 
-  signed char c;
+
   const char *tty = NULL;
   
 #define IFACE_ELM 0
@@ -63,7 +67,7 @@ int main(int argc, char **argv)
 #define IFACE_FTDI 2
 #define IFACE_FAKE 3
 #define IFACE_KCAN 4
-#if defined(NDEBUG) && defined(__MINGW32__)
+#if defined(NDEBUG) && (defined(__MINGW32__)|| defined (DIST_WINDOWS))
   int iface_type = IFACE_KCAN;
 #else
   int iface_type = IFACE_FAKE;
@@ -75,6 +79,8 @@ int main(int argc, char **argv)
 #ifndef NDEBUG
   uint32_t trigger = 0;
 #endif
+#if !defined(DIST_WINDOWS)
+  signed char c;
   while ((c = getopt (argc, argv, "d:t:w:s:m:r:p:i:ex:v:S")) != -1) {
     switch (c) {
       case 'd':
@@ -184,7 +190,8 @@ int main(int argc, char **argv)
   }
   argc -= optind;
   argv += optind;
-  
+#endif //DIST_WINDOWS  
+
 #ifndef NDEBUG
   if (trigger) {
     cpu.setDebugTrigger(trigger, debug_level);
@@ -192,13 +199,22 @@ int main(int argc, char **argv)
   }
 #endif
 
+#if !defined(DIST_WINDOWS)
   if (argc >= 1) {
     if (!cpu.loadRom(argv[0])) {
       ERROR("failed to load ROM image\n");
       exit(1);
     }
   }
-  
+#else
+  if (argc > 1) {
+      if (!cpu.loadRom(argv[1])) {
+          ERROR("failed to load ROM image\n");
+          exit(1);
+      }
+  }
+#endif
+
   Interface *iface;
   switch (iface_type) {
     case IFACE_KL:

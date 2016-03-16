@@ -1,0 +1,59 @@
+language: cpp
+os: osx
+install:
+-
+      brew install qt5
+      && chmod -R 755 /usr/local/opt/qt5/*
+      ;
+
+script: 
+- install_name_tool -id @rpath/QtWidgets.framework/Versions/5/QtWidgets /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/5/QtWidgets
+- install_name_tool -id @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtCore.framework/Versions/5/QtCore
+- install_name_tool -id @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtGui.framework/Versions/5/QtGui
+
+
+
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtGui.framework/Versions/5/QtGui  @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/Current/QtWidgets 
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtWidgets.framework/Versions/Current/QtWidgets 
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtGui.framework/Versions/Current/QtGui 
+
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtGui.framework/Versions/5/QtGui  @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtWidgets.framework/Versions/5/QtWidgets @rpath/QtWidgets.framework/Versions/5/QtWidgets /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
+
+
+- install_name_tool -id  @rpath/plugins/platforms/libqcocoa.dylib /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
+
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtPrintSupport.framework/Versions/5/QtPrintSupport @rpath/QtPrintSupport.framework/Versions/5/QtPrintSupport /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtWidgets.framework/Versions/5/QtWidgets @rpath/QtWidgets.framework/Versions/5/QtWidgets /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtGui.framework/Versions/5/QtGui @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/plugins/platforms/libqcocoa.dylib
+
+
+- /bin/bash ./build_osx_clang_x64.sh
+
+- install_name_tool -add_rpath @loader_path/ build/osx_clang64/Release/cascade 
+- install_name_tool -add_rpath @executable_path/ build/osx_clang64/Release/cascade 
+- install_name_tool -add_rpath . build/osx_clang64/Release/cascade 
+
+- zip -yrXj $TRAVIS_BUILD_DIR/cascade.zip build/osx_clang64/Release/cascade
+- cd /usr/local/opt/qt5/lib/
+- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtGui.framework
+- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtWidgets.framework	
+- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtCore.framework
+- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip QtPrintSupport.framework
+
+- cd ..
+- zip -qyrX $TRAVIS_BUILD_DIR/cascade.zip plugins 
+- cd $TRAVIS_BUILD_DIR
+deploy:
+  provider: releases
+  api_key:
+    secure: Y8BQ86C8S6ZQeQ81Gs9hPJGmJEhoIJsC3GWEnOmgHVutY3psmIcOCOznCdViG4NAMX/DukYL3RFP9C3oOrIXUkwD8r/L9SlGVbuwxmxW3IuQsyGy+qHnvwYJHcJsIHM7XWxsYPz2Qe4+rqTN2fxJM/PD8edddVHt5gjI9nMrW2V1ptx+7RfG34/XtaP4EcBCAyNyhTOlNuuh8rimVHxhhM35tHVyO5ct6//TZJp4c93CBZAH/bkxnwys9LRa+Xfdl+sWdFjuKDL2q8McNRSv9vkKaxzjI4b10mKspwk8v2WVg21jeSAv720aJCdumhGxX4Ts2aExlUOkL0MbCMLGL7F+OggNGziFTyKiZGXkGotkbcqSN6+J7Ht16AO7K9ehB9JG3SOdyMn0DOCB92OF7C24T4Knj7ZQnkuz3KTow07pKl3lsbKlywdOINLmYw236n1W5TQmpBufZVUOZZ9LJ12g7zBnmLtfslauUENI8Om4Nubu6dDKteUm4xxd9JG7m35bX5jb5h2cZrVL5yyvTl+NPLCtFCKl9ojE4bjojxpXMSZmDzb4/ji3WMFXkfqUEMpCgogsZ3E3VhwzCWHL4+Tf8s8fWY7vw1dlyRyMNBcUA6gKAb5NIjHKkBhwJACGwtRmYv8jAN8siAxJEDisyzQ5xyDgwOWGmfNbeKNgjLs=
+  file: 
+  - build/osx_clang64/Release/cascade
+  - cascade.zip
+  skip_cleanup: true
+  on:
+    repo: shadowsgit/cascade
+    branch: open_public

@@ -35,7 +35,7 @@ typedef FILE* statefile_t;
 #define state_tell ftell
 #define state_seek fseek
 #define state_eof feof
-#define state_close gzclose
+#define state_close fclose
 #define STATE_RW(x) write ? fwrite(&x, sizeof(x), 1, fp) : fread(&x, sizeof(x), 1, fp)
 #define STATE_RWBUF(x, n) write ? fwrite(x, n, 1, fp) : fread(x, n, 1, fp)
 #endif

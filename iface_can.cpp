@@ -175,7 +175,7 @@ void IfaceCAN::msgOut()
 
   /* 34 is the length of the longest fixed-size command (set filter),
      and the rest depends on tx_len, so this ought to be enough. */
-  uint8_t out[34 + tx_len];
+  uint8_t *out = (uint8_t *)alloca(34 + tx_len);
   int outp = 0;
 
   switch (tx_cmd) {

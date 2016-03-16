@@ -21,7 +21,7 @@
 #include <QPainter>
 #endif
 #include <QComboBox>
-#include <QtConcurrentRun>
+//#include <QtConcurrentRun>
 
 /* host display size */
 #define DISPLAY_X 800
@@ -193,7 +193,7 @@ class UI : public QWidget {
   Q_OBJECT
   
 public:
-  static void initToolkit();
+  static void initToolkit(char *appPath);
   
   UI(QWidget *parent = 0);
   ~UI();
