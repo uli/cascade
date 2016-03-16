@@ -18,7 +18,7 @@ script:
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtGui.framework/Versions/Current/QtGui 
 
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtGui.framework/Versions/5/QtGui  @rpath/QtGui.framework/Versions/5/QtGui /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
-- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
+- install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtWidgets.framework/Versions/5/QtWidgets @rpath/QtWidgets.framework/Versions/5/QtWidgets /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
 - install_name_tool -change /usr/local/Cellar/qt5/5.3.2/lib/QtCore.framework/Versions/5/QtCore @rpath/QtCore.framework/Versions/5/QtCore /usr/local/opt/qt5/lib/QtPrintSupport.framework/Versions/Current/QtPrintSupport 
 
 
